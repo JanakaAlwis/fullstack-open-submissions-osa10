@@ -1,19 +1,30 @@
 import React from 'react';
-import { View, StyleSheet, TextInput, Button } from 'react-native';
 import { Formik } from 'formik';
+import * as yup from 'yup';
+import { StyleSheet, Pressable, View } from 'react-native';
+import Text from './Text';
+import FormikTextInput from './FormikTextInput';
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    backgroundColor: 'white',
+    margin: 16,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    marginBottom: 12,
+  button: {
+    backgroundColor: '#0366d6',
+    padding: 12,
     borderRadius: 4,
+    alignItems: 'center',
+    marginTop: 12,
   },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+});
+
+const validationSchema = yup.object().shape({
+  username: yup.string().required('Username is required'),
+  password: yup.string().required('Password is required'),
 });
 
 const initialValues = {
@@ -21,33 +32,28 @@ const initialValues = {
   password: '',
 };
 
+const SignInForm = ({ onSubmit }) => {
+  return (
+    <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+      {({ handleSubmit }) => (
+        <View style={styles.container}>
+          <FormikTextInput name="username" placeholder="Username" />
+          <FormikTextInput name="password" placeholder="Password" secureTextEntry />
+          <Pressable style={styles.button} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Sign in</Text>
+          </Pressable>
+        </View>
+      )}
+    </Formik>
+  );
+};
+
 const SignIn = () => {
   const onSubmit = (values) => {
     console.log(values);
   };
 
-  return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit}>
-      {({ handleChange, handleSubmit, values }) => (
-        <View style={styles.container}>
-          <TextInput
-            style={styles.input}
-            placeholder="Username"
-            value={values.username}
-            onChangeText={handleChange('username')}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            secureTextEntry
-            value={values.password}
-            onChangeText={handleChange('password')}
-          />
-          <Button onPress={handleSubmit} title="Sign in" />
-        </View>
-      )}
-    </Formik>
-  );
+  return <SignInForm onSubmit={onSubmit} />;
 };
 
 export default SignIn;
