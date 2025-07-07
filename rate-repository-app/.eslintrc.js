@@ -8,6 +8,6 @@ module.exports = {
     jest: true,
   },
   rules: {
-    // You can add or override rules here if you want
+    
   },
 };
