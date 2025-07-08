@@ -1,4 +1,5 @@
-import { useMutation, gql } from '@apollo/client';
+import { useMutation, gql, useApolloClient } from '@apollo/client';
+import AuthStorage from '../utils/authStorage';
 
 const AUTHENTICATE = gql`
   mutation Authenticate($credentials: AuthenticateInput!) {
@@ -14,14 +15,22 @@ const AUTHENTICATE = gql`
 
 const useSignIn = () => {
   const [mutate, result] = useMutation(AUTHENTICATE);
+  const apolloClient = useApolloClient();
+  const authStorage = new AuthStorage();
 
   const signIn = async ({ username, password }) => {
-    const response = await mutate({
+    const { data } = await mutate({
       variables: {
         credentials: { username, password },
       },
     });
-    return response.data;
+
+    if (data?.authenticate?.accessToken) {
+      await authStorage.setAccessToken(data.authenticate.accessToken);
+      await apolloClient.resetStore();
+    }
+
+    return data;
   };
 
   return [signIn, result];
