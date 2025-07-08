@@ -1,32 +1,26 @@
 import { gql } from '@apollo/client';
+import { REVIEW_DETAILS } from './fragments';
 
-export const GET_REPOSITORY = gql`
-  query Repository($id: ID!) {
+export const GET_REPOSITORY_WITH_REVIEWS = gql`
+  query GetRepositoryWithReviews($id: ID!, $first: Int, $after: String) {
     repository(id: $id) {
       id
       fullName
-      description
-      language
-      forksCount
-      stargazersCount
-      ratingAverage
-      reviewCount
-      ownerAvatarUrl
-      url
-      reviews {
+      reviews(first: $first, after: $after) {
+        totalCount
+        pageInfo {
+          endCursor
+          startCursor
+          hasNextPage
+        }
         edges {
           node {
-            id
-            text
-            rating
-            createdAt
-            user {
-              id
-              username
-            }
+            ...ReviewDetails
           }
+          cursor
         }
       }
     }
   }
+  ${REVIEW_DETAILS}
 `;
