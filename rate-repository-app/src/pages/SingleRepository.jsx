@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/client';
 import { FlatList, Text, View, StyleSheet } from 'react-native';
 import { GET_REPOSITORY } from '../graphql/queries';
 import RepositoryItem from '../components/RepositoryItem';
+import ReviewItem from '../components/ReviewItem';
 
 const SingleRepository = () => {
   const { id } = useParams();
@@ -16,16 +17,24 @@ const SingleRepository = () => {
   if (error) return <Text>Error: {error.message}</Text>;
 
   const repo = data.repository;
+  const reviews = repo.reviews.edges.map(edge => edge.node);
 
   return (
-    <View style={styles.container}>
-      <RepositoryItem repository={repo} showGithubLink />
-    </View>
+    <FlatList
+      data={reviews}
+      keyExtractor={item => item.id}
+      renderItem={({ item }) => <ReviewItem review={item} />}
+      ListHeaderComponent={() => (
+        <View style={styles.header}>
+          <RepositoryItem repository={repo} showGithubLink />
+        </View>
+      )}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  header: { marginBottom: 16 },
 });
 
 export default SingleRepository;
