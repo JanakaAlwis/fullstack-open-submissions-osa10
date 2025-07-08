@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-native';
 import AppBar from '../components/AppBar';
 import RepositoryList from '../components/RepositoryList';
 import SignIn from '../components/SignIn';
-import CreateReview from '../components/CreateReview';  // <-- import here
+import CreateReview from './pages/CreateReview';
 
 const styles = StyleSheet.create({
   container: {

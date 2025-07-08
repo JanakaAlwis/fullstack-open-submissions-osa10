@@ -3,7 +3,7 @@ import { View, Button, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import FormikTextInput from './FormikTextInput';
+import FormikTextInput from './FormikTextInput.js';
 
 const styles = StyleSheet.create({
   container: {

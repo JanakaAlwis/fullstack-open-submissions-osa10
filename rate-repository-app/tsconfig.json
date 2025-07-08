@@ -4,17 +4,17 @@
     "strict": true,
     "skipLibCheck": true,
     "moduleResolution": "node16",
+    "module": "Node16",
     "esModuleInterop": true,
     "jsx": "react-native",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     }
   },
   "include": [
     "**/*.ts",
-    "**/*.tsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts"
-  ]
+    "**/*.tsx"
+, "src/pages/CreateReview.js", "src/components/ReviewForm.js", "src/components/FormikTextInput.js"  ]
 }
-
